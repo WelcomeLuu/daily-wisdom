@@ -1,28 +1,29 @@
-// get the html tags that need functionality
-const advicetext = document.getElementById('advice-text');
+// Declare the HTML elements
+const AdviceTxt = document.getElementById('advice-text');
 const btnAdvice = document.getElementById('get-advice');
 
-// Make a function to get advice
-const FetchAdvice =  async() =>
+
+// Declare the function
+const FuncAdvice = async() =>
 {
-    // tell the user that the fetch is loading
-    advicetext.innerHTML = "Loading...";
+    // Show the api fetch is loading
+    AdviceTxt.innerHTML = "Loading Wisdom...";
 
-    // declare a try catch to make sure that the user does not get a stack error
-    try
+    //Declare the try catch
+    try{
+        // get the api fetch
+        const Response = await fetch('https://api.adviceslip.com/advice');
+        const data = await Response.json();
+
+        // now display the advice to the user
+        AdviceTxt.innerHTML = `"${data.slip.advice}"`;
+    } catch(error)
     {
-        // remember await means pause here(used for async functions)
-        const Response = await fetch ('https://api.adviceslip.com/advice');
-        const data =  await Response.json();
-
-        advicetext.innerHTML = `"${data.slip.advice}"`; 
-
-    } catch (error) 
-    {
-        advicetext.innerHTML = "Something went wrong, try again";
+        // handle the error by displaying this to the user
+        AdviceTxt.innerHTML="Something went wrong. Try again";
     }
     
 }
 
-// event listener for the button
-btnAdvice.addEventListener('click', FetchAdvice);
+// Add event listener for the btn and the function
+btnAdvice.addEventListener('click',FuncAdvice);
